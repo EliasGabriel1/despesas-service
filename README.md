@@ -1,33 +1,176 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📊 Despesas Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descrição
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+O **Despesas Service** é responsável por gerenciar e controlar as despesas pessoais do usuário, incluindo categorização, orçamento e análise de gastos.
 
-## Description
+**Porta:** `3003`
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ⚙️ Responsabilidades
 
-## Project setup
+- 📝 **Registro de Despesas** - Criação e gerenciamento de despesas
+- 💰 **Categorização** - Organização por categorias
+- 📊 **Orçamento** - Definição e controle de orçamentos
+- 📈 **Análise** - Relatórios e insights sobre gastos
+- 🎯 **Metas** - Acompanhamento de metas de economia
+
+## 🚀 Endpoints Principais
 
 ```bash
+GET    /                      # Info da service
+GET    /despesas              # Listar despesas
+POST   /despesas              # Criar despesa
+GET    /despesas/:id          # Detalhes da despesa
+PATCH  /despesas/:id          # Atualizar despesa
+DELETE /despesas/:id          # Deletar despesa
+GET    /despesas/categoria/:cat # Despesas por categoria
+GET    /resumo                # Resumo de gastos
+GET    /orcamento             # Info de orçamento
+POST   /orcamento             # Definir orçamento
+```
+
+## 📊 Modelo de Despesa
+
+```typescript
+{
+  id: string
+  user_id: string
+  descricao: string
+  valor: number
+  categoria: string           // Alimentação, Transporte, etc
+  data: Date
+  mes: string                // YYYY-MM
+  status: 'REGISTRADA' | 'PAGA' | 'CANCELADA'
+  tags: string[]            // Identificadores customizados
+  created_at: Date
+  updated_at: Date
+}
+```
+
+## 🏷️ Categorias Padrão
+
+- 🍔 **Alimentação** - Restaurantes, supermercado
+- 🚗 **Transporte** - Combustível, uber, transporte público
+- 🏠 **Moradia** - Aluguel, condomínio, energia
+- 🏥 **Saúde** - Farmácia, consultas, plano
+- 📚 **Educação** - Cursos, livros, mensalidade
+- 🎮 **Lazer** - Cinema, games, viagens
+- 💼 **Trabalho** - Materiais de trabalho
+- 🛍️ **Compras** - Roupas, móveis, eletrônicos
+- 📱 **Assinaturas** - Netflix, Spotify, etc
+- ❌ **Outros** - Despesas diversas
+
+## 🛠️ Tecnologias
+
+- **NestJS** 10+
+- **TypeScript** 5+
+- **Prisma** 5+ (ORM)
+- **PostgreSQL** / **SQLite** (Database)
+
+## 🚀 Instalação
+
+```bash
+cd despesas-service
+npm install
+```
+
+## ⚙️ Configuração
+
+Crie um arquivo `.env`:
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/despesas
+# ou
+DATABASE_URL=file:./dev.db
+
+PORT=3003
+```
+
+## 📦 Rodar a Service
+
+```bash
+# Modo desenvolvimento
+npm run start:dev
+
+# Modo produção
+npm run build
+npm run start:prod
+```
+
+## 🔄 Prisma
+
+```bash
+# Criar/atualizar banco de dados
+npx prisma migrate dev
+
+# Gerar tipos TypeScript
+npx prisma generate
+
+# Acessar banco via Prisma Studio
+npx prisma studio
+```
+
+## 📁 Estrutura
+
+```
+src/
+├── controller/
+├── business/           # Lógica de negócio
+├── model/             # Tipos e interfaces
+├── app.module.ts
+└── main.ts
+```
+
+## 📈 Exemplo de Resposta
+
+### GET /resumo
+```json
+{
+  "periodo": "2026-01",
+  "totalGasto": 2500.00,
+  "orcamento": 3000.00,
+  "percentualUsado": 83.33,
+  "categorias": {
+    "Alimentação": 800.00,
+    "Transporte": 400.00,
+    "Moradia": 1000.00,
+    "Outros": 300.00
+  },
+  "comparacaoMesAnterior": {
+    "diferenca": 150.00,
+    "percentual": 6.4
+  }
+}
+```
+
+## 🧪 Testes
+
+```bash
+npm run test            # Testes unitários
+npm run test:watch     # Testes com observer
+npm run test:cov       # Cobertura de testes
+npm run test:e2e       # Testes E2E
+```
+
+## 🔐 Segurança
+
+- ✅ Validação de entrada
+- ✅ Dados isolados por usuário
+- ✅ JWT em todas as rotas
+- ✅ Prepared statements (Prisma)
+
+## 🚀 Próximos Passos
+
+- [ ] Alertas de overspend
+- [ ] Previsões de gastos
+- [ ] Análise com IA
+- [ ] Recomendações de economia
+- [ ] Exportação em PDF/CSV
+
+---
+
+**Desenvolvido com ❤️**  
+**Última atualização:** 16 de janeiro de 2026
 $ npm install
 ```
 
